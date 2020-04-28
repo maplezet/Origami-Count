@@ -6,7 +6,7 @@ import tkinter as tk
 #datasheet section
 scope = ["https://spreadsheets.google.com/feeds",'https://www.googleapis.com/auth/spreadsheets',"https://www.googleapis.com/auth/drive.file","https://www.googleapis.com/auth/drive"]
 
-creds = ServiceAccountCredentials.from_json_keyfile_name("creds", scope)
+creds = ServiceAccountCredentials.from_json_keyfile_name("creds.json", scope)
 
 client = gspread.authorize(creds)
 
@@ -35,7 +35,7 @@ def craneClicked():
 
         button1.config(image=lil_crane)
 
-        label1.config(text=lil_crane_amount)
+        label1.config(text=sol2)
     else:
         button_flag = True
         isCrane = True
@@ -43,6 +43,7 @@ def craneClicked():
         button1.config(image=crane)
 
         label1.config(text=sol1)
+
 
 
 def addCrane():
@@ -58,8 +59,8 @@ def addCrane():
         label1.config(text=sol2)
 
 def delCrane():
-    global crane_amount
-    global lil_crane_amount
+    global crane_amount_buffer
+    global lil_crane_amount_buffer
     global sol1
     global sol2
     if isCrane:
@@ -72,20 +73,27 @@ def delCrane():
 def push():
     sheet.update_cell(1,2,sol1)
     sheet.update_cell(2,2,sol2)
-    
 
+def callback():
+    push()
+    root.destroy()
+    
+ 
 #gui
 
 root = tk.Tk()
 root.geometry('400x600')
 root.resizable(0,0)
 root.configure(bg='#C9F6FF')
+root.title("Crane Counter")
+root.protocol("WM_DELETE_WINDOW", callback)
 
-crane = PhotoImage(file="crane.png")
-lil_crane = PhotoImage(file="lil crane.png")
-next1 = PhotoImage(file="next.png")
-back = PhotoImage(file="back.png")
-refresh = PhotoImage(file="refresh.png")
+
+crane = PhotoImage(file="assets/crane.png")
+lil_crane = PhotoImage(file="assets/lil crane.png")
+next1 = PhotoImage(file="assets/next.png")
+back = PhotoImage(file="assets/back.png")
+refresh = PhotoImage(file="assets/refresh.png")
 
 r_back = back.subsample(10, 10) 
 r_refresh = refresh.subsample(10, 10) 
